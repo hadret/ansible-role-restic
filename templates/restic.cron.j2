@@ -1,0 +1,27 @@
+# jinja2: lstrip_blocks: "True"
+# vi: ft=jinja.crontab
+# {{ ansible_managed }}
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_install_path }} 
+
+{% if item.retention is defined -%}
+# Apply retention policy
+{{ item.retention_time | default('17 3 * * *') }} {{ restic_user }} restic-{{ item.name }} forget --prune
+{%- if item.retention.last is defined %} --keep-last {{ item.retention.last }}{% endif -%}
+{% if item.retention.hourly is defined %} --keep-hourly {{ item.retention.hourly }}{% endif -%}
+{% if item.retention.daily is defined %} --keep-daily {{ item.retention.daily }}{% endif -%}
+{% if item.retention.weekly is defined %} --keep-weekly {{ item.retention.weekly }}{% endif -%}
+{% if item.retention.monthly is defined %} --keep-monthly {{ item.retention.monthly }}{% endif -%}
+{% if item.retention.yearly is defined %} --keep-yearly {{ item.retention.yearly }}{% endif -%}
+{% if item.retention.tags is defined %} --keep-tag {% for tag in item.retention.tags %}{{ tag }}{% if not loop.last %},{% endif %}{% endfor %}{% endif -%}{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{% endif %}
+
+{% if item.check | default(true) -%}
+# Check repository
+{{ item.check_time | default('17 4 * * *') }} {{ restic_user }} restic-{{ item.name }} check{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{%- endif %}
+
+# Do an actual backup
+{% for job in item.jobs %}
+{{ job.at }} {{ restic_user }} {{ job.command }}
+{% endfor %}

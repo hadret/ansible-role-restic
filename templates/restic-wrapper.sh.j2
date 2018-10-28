@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# {{ ansible_managed }}
+
+export RESTIC_REPOSITORY={{ item.url | trim | quote }}
+export RESTIC_PASSWORD_FILE={{ restic_password_file_path }}/.restic-{{ item.name | trim | quote }} 
+{% if item.remote_credentials is defined %}
+{% for k,v in item.remote_credentials.items() %}
+export {{ k | upper }}={{ v | trim | quote }}
+{% endfor %}
+{% endif %}
+
+"{{ restic_install_path }}/restic" "$@"

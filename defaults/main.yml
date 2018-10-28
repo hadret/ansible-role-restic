@@ -1,0 +1,43 @@
+---
+restic_version: '0.9.3'
+restic_install_path: '/usr/local/bin'
+restic_password_file_path: '/root'
+
+restic_discard_cron_stdout: false
+
+restic_user: root
+restic_group: "{{ restic_user }}"
+
+restic_repos: []
+# restic_repos:
+# - name: s3-example
+#   url: "s3:s3.amazonaws.com/bucket_name/restic"
+#   password: "dolphins"
+#   remote_credentials:
+#     aws_access_key_id: "AWS_ACCESS_KEY_ID"
+#     aws_secret_access_key: "AWS_SECRET_ACCESS_KEY"
+#   jobs:
+#     - command: 'restic backup /srv'
+#       at: '0 1  * * *'
+#   retention_time: '17 5 * * *'
+#   retention:
+#     last: 2
+#     hourly: 4
+#     daily: 10
+#     weekly: 9
+#     monthly: 3
+#     yearly: 10
+#     tags:
+#       - special
+# - name: backblaze-example
+#   url: "b2:bucketname:path/to/repo"
+#   password: "correcthorsebatterystaple"
+#   remote_credentials:
+#     b2_account_id: "B2_ACCOUNT_ID"
+#     b2_account_key: "B2_ACCOUNT_KEY"
+#   jobs:
+#     - command: 'restic backup /var'
+#       at: '0 4  * * *'
+#     - command: 'restic backup /home'
+#       at: '0 3  * * *'
+#       user: 'restic'

@@ -74,7 +74,9 @@ Credits
 
 This role builds on the shoulders of
 [donat-b/ansible-restic](https://github.com/donat-b/ansible-restic) and
-[paulfantom/ansible-restic](https://github.com/paulfantom/ansible-restic).
+[paulfantom/ansible-restic](https://github.com/paulfantom/ansible-restic). All
+of the `molecule` tests and CI configuration are based on work of
+[geerlingguy](https://github.com/geerlingguy).
 
 License
 -------

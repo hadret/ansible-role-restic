@@ -1,32 +1,25 @@
 ---
 stages:
   - test
+  - cleanup
 
 variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
-  ROLE_NAME: restic
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 cache:
   paths:
-    - .pip/
-    - virtenv/
+    - .cache/pip
 
 before_script:
-  - cd ../
-  - mv ansible-role-$ROLE_NAME hadret.$ROLE_NAME
-  - cd hadret.$ROLE_NAME
-  - pip install --user virtualenv
-  - virtualenv virtenv
-  - source virtenv/bin/activate
+  - docker -v
+  - python3 -V
+  - python3 -m venv ..
+  - source ../bin/activate
 
 molecule:
   stage: test
   tags:
     - shell
   script:
-    - docker -v
-    - python -V
-    - pip install ansible docker molecule
-    - ansible --version
-    - molecule --version
+    - pip install docker molecule
     - molecule test

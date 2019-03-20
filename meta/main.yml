@@ -1,13 +1,20 @@
 ---
+dependencies: []
+
 galaxy_info:
-  author: Filip Chabik
-  description: An Ansible role that installs restic on Linux.
+  role_name: restic
+  author: donat-b, Pawel Krupa (paulfantom), Filip Chabik (hadret)
+  description: Restic installation for Ubuntu Linux.
   license: MIT
   min_ansible_version: 2.7
   platforms:
     - name: Ubuntu
       versions:
-        - 16.04
-        - 18.04
-  galaxy_tags: []
-dependencies: []
+        - xenial
+        - bionic
+  galaxy_tags:
+    - restic
+    - backup
+    - system
+    - s3
+    - backblaze

@@ -16,7 +16,7 @@ Available variables are listed below, along with default values (see
 [defaults/main.yml](defaults/main.yml)):
 
 ```
-restic_version: '0.9.3'
+restic_version: '0.9.5'
 restic_install_path: '/usr/local/bin'
 restic_password_file_path: '/root'
 
@@ -51,7 +51,7 @@ Defines whether the cronjob output should be directed to `/dev/null` or not
 restic_repos: []
 ```
 
-This defines an array of restic jobs. Each defined job will create a separate 
+This defines an array of restic jobs. Each defined job will create a separate
 wrapper script and a password file. Examples can be found in
 [defaults/main.yml](defaults/main.yml).
 

@@ -17,6 +17,7 @@
   file:
     state: "directory"
     path: "{{ restic_install_path }}"
+    mode: "0755"
 
 - name: download restic binary
   get_url:

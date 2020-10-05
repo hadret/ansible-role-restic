@@ -17,9 +17,10 @@ Available variables are listed below, along with default values (see
 [defaults/main.yml](defaults/main.yml)):
 
 ```
-restic_version: '0.9.5'
+restic_version: '0.10.0'
 restic_install_path: '/usr/local/bin'
 restic_password_file_path: '/root'
+restic_discard_cron_stdout: false
 
 restic_user: root
 restic_group: "{{ restic_user }}"

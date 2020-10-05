@@ -3,7 +3,7 @@ Ansible Role: Restic
 
 [![Build Status](https://travis-ci.com/hadret/ansible-role-restic.svg?branch=master)](https://travis-ci.com/hadret/ansible-role-restic)
 
-An Ansible role that installs [restic](https://restic.net) on Linux.
+An Ansible role that installs [restic](https://restic.net) on Linux & FreeBSD.
 
 Requirements
 ------------

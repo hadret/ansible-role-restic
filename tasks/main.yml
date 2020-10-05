@@ -1,4 +1,17 @@
 ---
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: define restic_user.
+  set_fact:
+    restic_user: "{{ __restic_user }}"
+  when: restic_user is not defined
+
+- name: define restic_group
+  set_fact:
+    restic_group: "{{ __restic_group }}"
+  when: restic_group is not defined
+
 - name: ensure restic group is present
   group:
     name: "{{ restic_group }}"
@@ -57,6 +70,7 @@
     path: "{{ restic_install_path }}/restic"
     capability: cap_dac_read_search+ep
     state: present
+  when: ansible_system == "Linux"
   become: true
 
 - name: deploy password files

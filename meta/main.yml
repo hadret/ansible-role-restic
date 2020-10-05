@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   role_name: restic
   author: donat-b, Pawel Krupa (paulfantom), Filip Chabik (hadret)
-  description: Restic installation for Ubuntu Linux.
+  description: Restic installation for Linux & FreeBSD.
   license: MIT
   min_ansible_version: 2.7
   platforms:
@@ -16,6 +16,12 @@ galaxy_info:
         - xenial
         - bionic
         - focal
+    - name: FreeBSD
+      versions:
+        - 11.4
+        - 12.1
+        - 12.2
+        - 13.0
   galaxy_tags:
     - restic
     - backup

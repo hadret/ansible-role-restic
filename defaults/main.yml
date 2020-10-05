@@ -4,9 +4,6 @@ restic_install_path: '/usr/local/bin'
 restic_password_file_path: '/root'
 restic_discard_cron_stdout: false
 
-restic_user: root
-restic_group: "{{ restic_user }}"
-
 restic_repos: []
 # restic_repos:
 # - name: s3-example

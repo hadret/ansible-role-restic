@@ -1,0 +1,3 @@
+---
+__restic_user: "root"
+__restic_group: "{{ __restic_user }}"

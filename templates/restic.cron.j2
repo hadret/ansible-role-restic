@@ -23,5 +23,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 
 # Do an actual backup
 {% for job in item.jobs %}
-{{ job.at }} {{ restic_user }} {{ job.command }}
+{{ job.at }} {{ restic_user }} {{ job.command }}{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+
 {% endfor %}

@@ -68,7 +68,7 @@
     group: "{{ restic_group }}"
     create: true
   with_items: "{{ restic_repos }}"
-  no_log: true
+  no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
   become: true
 
 - name: deploy wrapper scripts
@@ -79,7 +79,7 @@
     owner: "root"
     group: "{{ restic_group }}"
   with_items: "{{ restic_repos }}"
-  no_log: true
+  no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
   become: true
 
 - name: deploy cron script
@@ -88,5 +88,5 @@
     dest: "/etc/cron.d/restic-{{ item.name }}"
     mode: "0640"
   with_items: "{{ restic_repos }}"
-  no_log: true
+  no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
   become: true

@@ -8,8 +8,7 @@ An Ansible role that installs [restic](https://restic.net) on Linux.
 Requirements
 ------------
 
-`bzip2` needs to be installed on Debian and derivatives in order for the role
-to work properly when unpacking the tarball.
+None.
 
 Role Variables
 --------------

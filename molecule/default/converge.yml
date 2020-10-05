@@ -3,11 +3,5 @@
   hosts: all
   become: true
 
-  pre_tasks:
-    - name: update apt cache and install bzip2
-      apt: name=bzip2 state=present update_cache=true cache_valid_time=600
-      when: ansible_os_family == 'Debian'
-      changed_when: false
-
   roles:
     - role: ansible-role-restic

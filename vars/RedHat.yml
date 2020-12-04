@@ -4,4 +4,4 @@ __restic_group: "{{ __restic_user }}"
 
 restic_dependencies:
   - bzip2
-  - libcap2-bin
+  - libcap

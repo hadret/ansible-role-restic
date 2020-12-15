@@ -32,17 +32,11 @@
     path: "{{ restic_install_path }}"
     mode: "0755"
 
-# TODO: move this to dedicated Setup-Debian.yml file
-- name: install dependencies on Debian and derivatives
-  apt:
-    name:
-      - "bzip2"
-      - "libcap2-bin"
+# TODO: move this to dedicated Setup-*.yml file
+- name: install packaged dependencies
+  package:
+    name: '{{ restic_dependencies | default([]) }}'
     state: present
-    update_cache: true
-    cache_valid_time: 3600
-  when: ansible_os_family == "Debian"
-  become: true
 
 # TODO: provide installation method from official repositories
 - name: download restic binary

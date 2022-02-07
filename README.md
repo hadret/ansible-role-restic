@@ -17,7 +17,7 @@ Available variables are listed below, along with default values (see
 [defaults/main.yml](defaults/main.yml)):
 
 ```
-restic_version: '0.12.0'
+restic_version: '0.12.1'
 restic_install_path: '/usr/local/bin'
 restic_password_file_path: '/root'
 restic_discard_cron_stdout: false
@@ -50,6 +50,16 @@ Defines whether the cronjob output should be directed to `/dev/null` or not
 (it will send e-mail on each execution if this is set to `false`).
 
 ```
+restic_prometheus_exporter: true
+restic_prometheus_output_path: /var/lib/node_exporter/textfile_collector
+```
+
+It enables very simple Prometheus integration that is going to write three
+values to the default textfile collector location. Please note that enabling
+support for this is going to install/require two additional dependencies:
+`jq` and `moreutils` (for `sponge`).
+
+```
 restic_repos: []
 ```
 
@@ -78,7 +88,8 @@ This role builds on the shoulders of
 [donat-b/ansible-restic](https://github.com/donat-b/ansible-restic) and
 [paulfantom/ansible-restic](https://github.com/paulfantom/ansible-restic). All
 of the `molecule` tests and CI configuration are based on work of
-[geerlingguy](https://github.com/geerlingguy).
+[geerlingguy](https://github.com/geerlingguy). A lot of parts for the Prometheus integration had been taken
+directly from [this Restic forum thread](https://forum.restic.net/t/restic-grafana-dashboard/1662/6).
 
 License
 -------

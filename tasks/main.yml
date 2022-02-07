@@ -38,6 +38,14 @@
     name: '{{ restic_dependencies | default([]) }}'
     state: present
 
+- name: install dependencies for prometheus integration
+  package:
+    name:
+      - jq
+      - moreutils
+    state: present
+  when: restic_prometheus_exporter | default("false") | bool
+
 # TODO: provide installation method from official repositories
 - name: download restic binary
   get_url:
@@ -66,6 +74,9 @@
     state: present
   when: ansible_system == "Linux"
   become: true
+  # Disabled due to this bug: https://github.com/ansible/ansible/issues/47156
+  tags:
+    - molecule-idempotence-notest
 
 - name: deploy password files
   lineinfile:
@@ -98,3 +109,15 @@
   with_items: "{{ restic_repos }}"
   no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
   become: true
+
+- name: deploy prometheus exporter script
+  template:
+    src: "restic-exporter.sh.j2"
+    dest: "{{ restic_install_path }}/restic-{{ item.name }}-exporter"
+    mode: "0770"
+    owner: "root"
+    group: "{{ restic_group }}"
+  with_items: "{{ restic_repos }}"
+  no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
+  become: true
+  when: restic_prometheus_exporter | default("false") | bool

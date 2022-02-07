@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# {{ ansible_managed }}
+
+{{ restic_install_path }}/restic-{{ item.name | trim | quote }} stats latest --json | /usr/bin/jq -r '"restic_stats_total_size_bytes \(.total_size)\nrestic_stats_total_file_count \(.total_file_count)"' | /usr/bin/sponge {{ restic_prometheus_output_path | default('/var/lib/node_exporter/textfile_collector') }}/restic-{{ item.name | trim | quote }}.prom
+{{ restic_install_path }}/restic-{{ item.name | trim | quote }} snapshots latest --json | /usr/bin/jq -r 'max_by(.time) | .time | sub("[.][0-9]+"; "") | sub("Z"; "+00:00") | def parseDate(date): date | capture("(?<no_tz>.*)(?<tz_sgn>[-+])(?<tz_hr>\\d{2}):(?<tz_min>\\d{2})$") | (.no_tz + "Z" | fromdateiso8601) - (.tz_sgn + "60" | tonumber) * ((.tz_hr | tonumber) * 60 + (.tz_min | tonumber)); parseDate(.) | "restic_last_snapshot_timestamp \(.)"' | /usr/bin/sponge -a {{ restic_prometheus_output_path | default('/var/lib/node_exporter/textfile_collector') }}/restic-{{ item.name | trim | quote }}.prom

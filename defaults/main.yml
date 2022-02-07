@@ -4,6 +4,9 @@ restic_install_path: '/usr/local/bin'
 restic_password_file_path: '/root'
 restic_discard_cron_stdout: false
 
+# restic_prometheus_exporter: false
+# restic_prometheus_output_path: /var/lib/node_exporter/textfile_collector
+
 restic_repos: []
 # restic_repos:
 # - name: s3-example

@@ -6,6 +6,7 @@ env:
   matrix:
     - MOLECULE_DISTRO: ubuntu2004
     - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: debian11
 
 install:
   - pip install molecule yamllint ansible-lint docker

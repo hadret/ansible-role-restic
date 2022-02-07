@@ -1,6 +1,9 @@
 ---
 language: python
+python:
+  - "3.9"
 services: docker
+dist: focal
 
 env:
   matrix:
@@ -9,7 +12,7 @@ env:
     - MOLECULE_DISTRO: debian11
 
 install:
-  - pip install molecule yamllint ansible-lint docker
+  - pip install ansible docker molecule-docker
 
 script:
   - molecule test

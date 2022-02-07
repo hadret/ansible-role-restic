@@ -74,6 +74,9 @@
     state: present
   when: ansible_system == "Linux"
   become: true
+  # Disabled due to this bug: https://github.com/ansible/ansible/issues/47156
+  tags:
+    - molecule-idempotence-notest
 
 - name: deploy password files
   lineinfile:

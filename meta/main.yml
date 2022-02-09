@@ -23,6 +23,7 @@ galaxy_info:
     - name: FreeBSD
       versions:
         - 12.2
+        - 12.3
         - 13.0
   galaxy_tags:
     - restic

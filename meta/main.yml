@@ -18,13 +18,10 @@ galaxy_info:
         - bullseye
     - name: Ubuntu
       versions:
-        - xenial
         - bionic
         - focal
     - name: FreeBSD
       versions:
-        - 11.4
-        - 12.1
         - 12.2
         - 13.0
   galaxy_tags:

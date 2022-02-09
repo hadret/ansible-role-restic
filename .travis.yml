@@ -8,8 +8,8 @@ dist: focal
 env:
   matrix:
     - MOLECULE_DISTRO: ubuntu2004
-    - MOLECULE_DISTRO: ubuntu1804
     - MOLECULE_DISTRO: debian11
+    - MOLECULE_DISTRO: rockylinux8
 
 install:
   - pip install ansible docker molecule-docker

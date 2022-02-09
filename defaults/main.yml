@@ -19,6 +19,7 @@ restic_repos: []
 #   jobs:
 #     - command: 'restic-s3-example backup /srv'
 #       at: '0 1  * * *'
+#       pre_command: 'mysqldump --all-databases > /srv/my.sql'
 #   retention_time: '17 5 * * *'
 #   retention:
 #     last: 2
@@ -38,6 +39,7 @@ restic_repos: []
 #   jobs:
 #     - command: 'restic-backblaze-example backup /var'
 #       at: '0 4  * * *'
-#     - command: 'restic backup /home'
+#       post_command: 'systemctl restart some-app'
+#     - command: 'restic-backblaze-example backup /home'
 #       at: '0 3  * * *'
 #       user: 'restic'

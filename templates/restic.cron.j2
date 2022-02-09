@@ -28,7 +28,21 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 {% endif -%}
 
 # Do an actual backup
+{# Iterate through all of the defined item.jobs #}
 {% for job in item.jobs %}
-{{ job.at }} {{ restic_user }} {{ job.command }}{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{#- Set job.at and job.user or restic_user and add space in the very end #}
+{{ job.at }} {{ job.user | default(restic_user) }}{{ ' ' }}
+{#- Setup pre_command or opening parenthesis for post_command #}
+{%- if job.pre_command is defined %}({{ job.pre_command }} && {% endif %}
+{%- if job.pre_command is not defined and job.post_command is defined %}({% endif %}
+{#- Actual backup job #}
+{{ job.command }}
+{#- Set closing parenthesis for pre_command or setup post_command #}
+{%- if job.pre_command is defined and job.post_command is not defined %}){% endif %}
+{%- if job.post_command is defined %} && {{ job.post_command }}){% endif %}
+{#- Handle discarding of the logs #}
+{%- if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{#- Handle Prometheus on the job level #}
+{#- if job.prometheus is defined and job.prometheus %} {{ item.name | trim | replace(' ', '-') }}{% endif #}
 
 {% endfor %}

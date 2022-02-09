@@ -17,7 +17,7 @@ restic_repos: []
 #     aws_access_key_id: "AWS_ACCESS_KEY_ID"
 #     aws_secret_access_key: "AWS_SECRET_ACCESS_KEY"
 #   jobs:
-#     - command: 'restic backup /srv'
+#     - command: 'restic-s3-example backup /srv'
 #       at: '0 1  * * *'
 #   retention_time: '17 5 * * *'
 #   retention:
@@ -36,7 +36,7 @@ restic_repos: []
 #     b2_account_id: "B2_ACCOUNT_ID"
 #     b2_account_key: "B2_ACCOUNT_KEY"
 #   jobs:
-#     - command: 'restic backup /var'
+#     - command: 'restic-backblaze-example backup /var'
 #       at: '0 4  * * *'
 #     - command: 'restic backup /home'
 #       at: '0 3  * * *'

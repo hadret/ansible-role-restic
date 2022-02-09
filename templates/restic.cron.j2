@@ -6,7 +6,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 
 {% if item.retention is defined -%}
 # Apply retention policy
-{{ item.retention_time | default('17 3 * * *') }} {{ restic_user }} restic-{{ item.name }} forget --prune
+{{ item.retention_time | default('17 3 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }} forget --prune
 {%- if item.retention.last is defined %} --keep-last {{ item.retention.last }}{% endif -%}
 {% if item.retention.hourly is defined %} --keep-hourly {{ item.retention.hourly }}{% endif -%}
 {% if item.retention.daily is defined %} --keep-daily {{ item.retention.daily }}{% endif -%}
@@ -18,12 +18,12 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 
 {% if item.check | default(true) -%}
 # Check repository
-{{ item.check_time | default('17 4 * * *') }} {{ restic_user }} restic-{{ item.name }} check{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{{ item.check_time | default('17 4 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }} check{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
 {%- endif %}
 
 {% if restic_prometheus_exporter | default(false) -%}
 # Dump stats for Prometheus
-{{ restic_prometheus_time | default('0 0 * * *') }} {{ restic_user }} restic-{{ item.name }}-exporter{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{{ restic_prometheus_time | default('0 0 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }}-exporter{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
 
 {% endif -%}
 

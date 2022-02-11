@@ -1,4 +1,4 @@
-# jinja2: lstrip_blocks: "True"
+#jinja2:lstrip_blocks: True, trim_blocks: True
 # vi: ft=jinja.crontab
 # {{ ansible_managed }}
 SHELL=/bin/sh
@@ -6,7 +6,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 
 {% if item.retention is defined -%}
 # Apply retention policy
-{{ item.retention_time | default('17 3 * * *') }} {{ restic_user }} restic-{{ item.name }} forget --prune
+{{ item.retention_time | default('17 3 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }} forget --prune
 {%- if item.retention.last is defined %} --keep-last {{ item.retention.last }}{% endif -%}
 {% if item.retention.hourly is defined %} --keep-hourly {{ item.retention.hourly }}{% endif -%}
 {% if item.retention.daily is defined %} --keep-daily {{ item.retention.daily }}{% endif -%}
@@ -18,17 +18,31 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:{{ restic_inst
 
 {% if item.check | default(true) -%}
 # Check repository
-{{ item.check_time | default('17 4 * * *') }} {{ restic_user }} restic-{{ item.name }} check{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{{ item.check_time | default('17 4 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }} check{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
 {%- endif %}
 
 {% if restic_prometheus_exporter | default(false) -%}
 # Dump stats for Prometheus
-{{ restic_prometheus_time | default('0 0 * * *') }} {{ restic_user }} restic-{{ item.name }}-exporter{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{{ restic_prometheus_time | default('0 0 * * *') }} {{ restic_user }} restic-{{ item.name | trim | replace(' ', '-') }}-exporter{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
 
 {% endif -%}
 
 # Do an actual backup
+{# Iterate through all of the defined item.jobs #}
 {% for job in item.jobs %}
-{{ job.at }} {{ restic_user }} {{ job.command }}{% if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{#- Set job.at and job.user or restic_user and add space in the very end #}
+{{ job.at }} {{ job.user | default(restic_user) }}{{ ' ' }}
+{#- Setup pre_command or opening parenthesis for post_command #}
+{%- if job.pre_command is defined %}({{ job.pre_command }} && {% endif %}
+{%- if job.pre_command is not defined and job.post_command is defined %}({% endif %}
+{#- Actual backup job #}
+{{ job.command }}
+{#- Set closing parenthesis for pre_command or setup post_command #}
+{%- if job.pre_command is defined and job.post_command is not defined %}){% endif %}
+{%- if job.post_command is defined %} && {{ job.post_command }}){% endif %}
+{#- Handle discarding of the logs #}
+{%- if restic_discard_cron_stdout %} > /dev/null{% endif %}
+{#- Handle Prometheus on the job level #}
+{#- if job.prometheus is defined and job.prometheus %} {{ item.name | trim | replace(' ', '-') }}{% endif #}
 
 {% endfor %}

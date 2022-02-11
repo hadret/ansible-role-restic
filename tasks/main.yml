@@ -80,7 +80,7 @@
 
 - name: deploy password files
   lineinfile:
-    path: "{{ restic_password_file_path }}/.restic-{{ item.name }}"
+    path: "{{ restic_password_file_path }}/.restic-{{ item.name | trim | replace(' ', '-') }}"
     line: "{{ item.password }}"
     mode: "0440"
     owner: "root"
@@ -93,7 +93,7 @@
 - name: deploy wrapper scripts
   template:
     src: "restic-wrapper.sh.j2"
-    dest: "{{ restic_install_path }}/restic-{{ item.name }}"
+    dest: "{{ restic_install_path }}/restic-{{ item.name | trim | replace(' ', '-') }}"
     mode: "0770"
     owner: "root"
     group: "{{ restic_group }}"
@@ -104,7 +104,7 @@
 - name: deploy cron script
   template:
     src: "restic.cron.j2"
-    dest: "/etc/cron.d/restic-{{ item.name }}"
+    dest: "/etc/cron.d/restic-{{ item.name | trim | replace(' ', '-') }}"
     mode: "0640"
   with_items: "{{ restic_repos }}"
   no_log: "{{ restic_ansible_nolog|default(item.no_log | default(true)) }}"
@@ -113,7 +113,7 @@
 - name: deploy prometheus exporter script
   template:
     src: "restic-exporter.sh.j2"
-    dest: "{{ restic_install_path }}/restic-{{ item.name }}-exporter"
+    dest: "{{ restic_install_path }}/restic-{{ item.name | trim | replace(' ', '-') }}-exporter"
     mode: "0770"
     owner: "root"
     group: "{{ restic_group }}"
